@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caderno de Receitas do Mundo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topo">
+    <div class="topo-interno">
+      <h1>Caderno de receitas do mundo</h1>
+      <p>Descubra pratos de cada país e guarde os seus favoritos.</p>
+      <nav aria-label="Seções da página">
+        <a href="#descobrir">Descobrir pratos</a>
+        <a href="#receitas">Minhas receitas</a>
+        <a href="#formulario">Cadastrar receita</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <p id="avisoConfig" class="faixa-aviso" hidden>
+      O Firebase ainda não está configurado. Abra o arquivo <code>firebase-config.js</code> e cole as chaves do seu projeto.
+    </p>
+
+    <!-- API EXTERNA: TheMealDB -->
+    <section id="descobrir" class="bloco">
+      <h2>Descobrir pratos</h2>
+      <p class="apoio">Os dados vêm da TheMealDB. Escolha um país, busque pelo nome ou sorteie um prato.</p>
+
+      <div class="busca">
+        <label>País
+          <select id="selPais"><option value="">Escolha um país</option></select>
+        </label>
+        <label>Buscar pelo nome do prato
+          <input id="inpBusca" type="search" placeholder="Ex.: lasagne">
+        </label>
+        <button id="btnBuscar" class="btn btn-primario" type="button">Buscar</button>
+        <button id="btnSorteio" class="btn" type="button">Sortear um prato</button>
+      </div>
+
+      <p id="statusApi" class="status" role="status"></p>
+      <div id="gridApi" class="grade-api"></div>
+    </section>
+
+    <div class="duas-colunas">
+      <!-- CRUD: R (listagem) -->
+      <section id="receitas" class="bloco">
+        <h2>Minhas receitas</h2>
+        <div class="linha-filtro">
+          <label>Filtrar por nome, país ou categoria
+            <input id="filtro" type="search" placeholder="Ex.: Italian">
+          </label>
+          <span id="contagem" class="contagem"></span>
+        </div>
+        <p id="statusLista" class="status" role="status"></p>
+        <div id="gridReceitas" class="grade-receitas"></div>
+      </section>
+
+      <!-- CRUD: C (cadastrar) e U (atualizar) -->
+      <aside id="formulario" class="bloco painel-form">
+        <h2 id="tituloForm">Cadastrar receita</h2>
+        <form id="formReceita" novalidate>
+          <label>Nome da receita
+            <input name="nome" required maxlength="120">
+          </label>
+          <label>País de origem
+            <input name="pais" required list="listaPaises" maxlength="60" autocomplete="off">
+            <datalist id="listaPaises"></datalist>
+          </label>
+          <label>Categoria
+            <input name="categoria" maxlength="60" placeholder="Ex.: Massa, Sobremesa">
+          </label>
+          <label>Endereço da foto (opcional)
+            <input name="imagem" type="url" placeholder="https://...">
+          </label>
+          <label>Ingredientes (um por linha)
+            <textarea name="ingredientes" rows="5" required></textarea>
+          </label>
+          <label>Modo de preparo
+            <textarea name="preparo" rows="6" required></textarea>
+          </label>
+          <label>Observações pessoais (opcional)
+            <textarea name="observacoes" rows="2"></textarea>
+          </label>
+
+          <p id="statusForm" class="status" role="status"></p>
+          <div class="acoes-form">
+            <button id="btnSalvar" class="btn btn-primario" type="submit">Salvar receita</button>
+            <button id="btnCancelar" class="btn" type="button" hidden>Cancelar edição</button>
+          </div>
+        </form>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Detalhe de um prato da API -->
+  <dialog id="dlgDetalhe" aria-labelledby="detNome">
+    <img id="detImg" alt="">
+    <div class="det-corpo">
+      <h2 id="detNome"></h2>
+      <p id="detMeta" class="meta"></p>
+      <h3>Ingredientes</h3>
+      <ul id="detIngredientes"></ul>
+      <h3>Modo de preparo</h3>
+      <p id="detPreparo" class="texto-longo"></p>
+      <p class="apoio">O texto original da API está em inglês. Depois de salvar, você pode editar e traduzir.</p>
+      <div class="acoes-form">
+        <button id="btnSalvarApi" class="btn btn-primario" type="button">Salvar nos favoritos</button>
+        <button id="btnFechar" class="btn" type="button">Fechar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
